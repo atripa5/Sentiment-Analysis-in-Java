@@ -1,12 +1,15 @@
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Test {
+public class SentimentAnalysis {
 	
 	
 
@@ -19,9 +22,19 @@ public static void main(String args[]) throws IOException
 		int count=0;
 		String tweet;
 	
+		  ArrayList<String> stopwords= new ArrayList<String>();
+		  BufferedReader stop = new BufferedReader(new FileReader("Data\\stopwords.txt"));
+		  String line = "";
+		  while ((line = stop.readLine()) != null)
+		  {
+			  stopwords.add(line);
+		  }
+		
+		
 		 Map<String, String> map = new HashMap<String, String>();
-	        BufferedReader in = new BufferedReader(new FileReader("C:\\Users\\Abhishek\\Desktop\\Yelp Twitter Analysis\\Twitter-Sentiment-Analysis-using-Heuristics\\Solution Files\\AFFIN.txt"));
-	        String line = "";
+	        BufferedReader in = new BufferedReader(new FileReader("Data\\AFINN"));
+	        
+	        line="";
 	        while ((line = in.readLine()) != null) {
 	            String parts[] = line.split("\t");
 	            map.put(parts[0], parts[1]);
@@ -32,29 +45,34 @@ public static void main(String args[]) throws IOException
 	   
 		
 		
-		Scanner inputStream= new Scanner(new FileReader("C:\\Users\\Abhishek\\Desktop\\SentimentTest.csv"));
+		Scanner inputStream= new Scanner(new FileReader("C:\\Users\\ATripathi\\Desktop\\New folder\\Sentiment Analysis\\Data\\TestTweets.csv"));
 		while(inputStream.hasNextLine())
 		{
 			float tweetscore=0;
 		tweet= inputStream.nextLine();
-		String[] word=tweet.toLowerCase().split(" ");
-		System.out.println(word[0]);
+		String[] word=tweet.split(" ");
+		
 		
 
 			for(int i=0; i<word.length;i++)
 			{
-				String wordscore= map.get(word[i].toLowerCase());
+				if(stopwords.contains(word[i].toLowerCase()))
+				{
+					
+				}
+				else{
 				if(map.get(word[i])!=null)
 				{
+				String wordscore= map.get(word[i].toLowerCase());
 				tweetscore=(float) tweetscore + Integer.parseInt(wordscore);
-			}}
+			}}}
 			Map<String, Float> sentiment= new HashMap<String, Float>();
 			sentiment.put(tweet, tweetscore);
 			System.out.println(sentiment.toString()); 
 		
 					
 		} 
-		System.out.println(count);
+		
 		
 		
 		
